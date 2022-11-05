@@ -31,10 +31,9 @@ export default function Navbar(props) {
     <div className="z-10 uppercase fixed w-full text-white bg-blue-1 flex px-14 py-4 justify-between items-center">
       <h1 className="text-2xl font-bold"> LMS</h1>
       <nav className="flex justify-between  space-x-10">
-
         <h1>
           {!isLoggedin ? (
-            <div className="flex space-x-8" >
+            <div className="flex space-x-8">
               <Link to="/user_login">
                 <h1>USER LOGIN</h1>
               </Link>

@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import ProfileTemp from "./components/ProfileTemp";
 import { ToastContainer, toast } from "react-toastify";
 import AllBooks from "./pages/AllBooksAdmin";
 import Compose from "./pages/Compose";
@@ -22,7 +20,7 @@ import AllIssuedAdmin from "./pages/AllIssuedAdmin";
 // import AllBooksUser from "./pages/AllBooksUser";
 import AllUsers from "./pages/AllUsers";
 import UpdateUser from "./pages/UpdateUser";
-
+import LoginAdmin from "./components/LoginAdmin";
 
 // Modal.setAppElement("#root");
 function App() {
@@ -56,7 +54,6 @@ function App() {
   const [id, setId] = useState("");
   return (
     <div className="App h-screen w-screen scrollbar-hide">
-
       {/* <Navbar setShowProfile={setShowProfile} /> */}
 
       {/* <Navbar setShowProfile={setShowProfile} /> */}
@@ -68,8 +65,8 @@ function App() {
 
       {/* <Navbar setShowProfile={setShowProfile} /> */}
       <Routes>
-        <Route path="/admin_login" element={<Login />} />
-        <Route path="user_login" element={<Login />} />
+        <Route path="/admin_login" element={<LoginAdmin />} />
+        <Route path="/user_login" element={<Login />} />
 
         <Route path="user" element={<NavbarUser />}>
           <Route path="home" element={<HomeWithoutNav />} />
@@ -83,29 +80,31 @@ function App() {
           <Route path="allbooksadmin" element={<AllBooksAdmin />} />
           <Route path="allissuedadmin" element={<AllIssuedAdmin />} />
           <Route path="userlist" element={<AllUsers />} />
+          <Route path="updateBook/:id" element={<Update />} />
           <Route path="updateuser" element={<UpdateUser />} />
+          <Route
+            path="compose"
+            element={
+              <Compose
+                setToastCondition={setToastCondition}
+                setToastShow={setToastShow}
+              />
+            }
+          />
+          <Route
+            path="update/:id"
+            element={
+              <Update
+                setToastCondition={setToastCondition}
+                setToastShow={setToastShow}
+              />
+            }
+          />
         </Route>
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Home />} />
-        <Route
-          path="compose"
-          element={
-            <Compose
-              setToastCondition={setToastCondition}
-              setToastShow={setToastShow}
-            />
-          }
-        />
-        <Route
-          path="update/:id"
-          element={
-            <Update
-              setToastCondition={setToastCondition}
-              setToastShow={setToastShow}
-            />
-          }
-        />
+
         <Route path="/allBooks" element={<AllBooks id={id} setId={setId} />} />
       </Routes>
       {/* <ProfileTemp show={showProfile} /> */}

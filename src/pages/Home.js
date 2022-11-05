@@ -9,10 +9,9 @@ export default function Home(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isUser, setIsUser] = useState("");
 
-
   useEffect(() => {
     async function handleUser() {
-      const res = await fetch("/auth");
+      const res = await fetch("/getAdmin");
       const data = await res.json();
       console.log(data);
       if (data.error) {
@@ -25,19 +24,21 @@ export default function Home(props) {
   }, []);
   return (
     <div>
-
-      {
-        !isLoggedIn ? (<Navbar />) : isUser === "User" ? (<NavbarUser />) : (<NavbarAdmin />)
-
-      }
+      {!isLoggedIn ? (
+        <Navbar />
+      ) : isUser === "User" ? (
+        <NavbarUser />
+      ) : (
+        <NavbarAdmin />
+      )}
 
       <div className="grid grid-cols-2 pl-24 py-10">
         <div className="mt-32">
-          <h1 className="text-5xl font-bold text-blue-3">LIBRARY MANAGEMENT SYSTEM</h1>
+          <h1 className="text-5xl font-bold text-blue-3">
+            LIBRARY MANAGEMENT SYSTEM
+          </h1>
           <h1 className="text-3xl py-8">Books Are A Uniquely Portable Magic</h1>
-          <p className="text-lg">
-            Track All Our Library Books Here!!
-          </p>
+          <p className="text-lg">Track All Our Library Books Here!!</p>
           {isLoggedIn ? (
             <button
               className="my-5 px-8 py-4 bg-blue-2 font-bold rounded-full"
@@ -48,9 +49,7 @@ export default function Home(props) {
               <h1 className="text-white">See Books</h1>
             </button>
           ) : (
-            <button
-              className="my-5 px-8 py-4 bg-blue-2 font-bold rounded-full"
-            >
+            <button className="my-5 px-8 py-4 bg-blue-2 font-bold rounded-full">
               <h1 className="text-white">Get Started</h1>
             </button>
           )}

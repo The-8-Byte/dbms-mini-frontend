@@ -1,34 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BooktempAdmin from "../components/BooktempAdmin";
-import BooktempIssue from "../components/BooktempIssue";
-
 
 export default function AllBooksAdmin(props) {
   const navigate = useNavigate();
-  const [post, setPost] = useState([]);
+  const [Book, setBook] = useState([]);
   useEffect(() => {
-    async function handleAllPost() {
-      const res = await fetch("/getAllPost");
+    async function handleAllBook() {
+      const res = await fetch("/viewAllBooks");
       const data = await res.json();
-      if (data.error) {
+      if (data.errors) {
         navigate("/");
       } else {
-        setPost(data.Posts);
+        setBook(data.data);
       }
     }
-    handleAllPost();
+    handleAllBook();
   }, []);
 
   return (
     <div className="ml-96">
-      {/* {post.map((post) => {
-        return <Posttemp post={post} setId={props.setId} />;
-      })} */}
-      <BooktempAdmin />
-
-      <BooktempAdmin />
-
+      {Book.map((book) => {
+        return <BooktempAdmin book={book} />;
+      })}
       <div className="fixed right-10 bottom-10">
         <button
           className="hover:scale-110 "

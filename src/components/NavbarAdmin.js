@@ -7,29 +7,31 @@ export default function NavbarAdmin(props) {
   const [isLoggedin, setIsLoggedin] = useState(false);
   useEffect(() => {
     async function handleNavbar() {
-      const res = await fetch("/getUser");
+      const res = await fetch("/auth");
       const data = await res.json();
-      if (data.error) {
+      if (data.msg === "Proceed to login") {
         setIsLoggedin(false);
+        navigate("/");
       } else {
         setIsLoggedin(true);
       }
     }
     handleNavbar();
-  });
+  }, []);
 
-  // const handleLogout = async () => {
-  //   const res = await fetch("/logout");
-  //   setIsLoggedin(false);
-  //   window.location.reload();
-  //   navigate("/");
-  // };
+  const handleLogout = async () => {
+    const res = await fetch("/logout");
+    setIsLoggedin(false);
+    navigate("/");
+  };
 
   // const location = useLocation();
   return (
     <>
       <div className="z-10 uppercase fixed w-full text-white bg-blue-1 flex px-14 py-4 justify-between items-center">
-        <h1 className="text-2xl font-bold"><a href="/">LMS</a></h1>
+        <h1 className="text-2xl font-bold">
+          <a href="/">LMS</a>
+        </h1>
         <nav className="flex justify-between space-x-10">
           <Link to="/admin/allBooksadmin">
             <h1>All Books</h1>
@@ -58,12 +60,12 @@ export default function NavbarAdmin(props) {
           ) : undefined}
           <h1>
             {isLoggedin ? (
-              <h1 className="cursor-pointer">
-                login
+              <h1 onClick={handleLogout} className="cursor-pointer">
+                logout
               </h1>
             ) : (
               <h1 className="cursor-pointer text-white">
-                <a href="/">Logout</a>
+                <a href="/">login</a>
               </h1>
             )}
           </h1>
