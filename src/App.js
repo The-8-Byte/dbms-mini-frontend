@@ -17,14 +17,11 @@ import AllAvailableBooks from "./pages/AllAvailableBooks";
 import AllIssuedBooks from "./pages/AllIssuedBooks";
 import AllBooksAdmin from "./pages/AllBooksAdmin";
 import AllIssuedAdmin from "./pages/AllIssuedAdmin";
-// import AllBooksUser from "./pages/AllBooksUser";
 import AllUsers from "./pages/AllUsers";
 import UpdateUser from "./pages/UpdateUser";
 import LoginAdmin from "./components/LoginAdmin";
 
-// Modal.setAppElement("#root");
 function App() {
-  const [showProfile, setShowProfile] = useState("hidden");
   const [toastShow, setToastShow] = useState(false);
   const [toastCondition, setToastCondition] = useState({
     status: "",
@@ -38,7 +35,7 @@ function App() {
       toast.error(toastCondition.message);
     } else if (toastCondition.status === "warning") {
       toast.warn(toastCondition.message);
-    } else if (toastCondition.status == "info") {
+    } else if (toastCondition.status === "info") {
       toast.info(toastCondition.message);
     }
     setToastCondition({
@@ -47,9 +44,6 @@ function App() {
     });
     setToastShow(false);
   }
-
-  const isAdmin = 1;
-  const isloggedIn = 1;
 
   const [id, setId] = useState("");
   return (
@@ -67,6 +61,7 @@ function App() {
       <Routes>
         <Route path="/admin_login" element={<LoginAdmin />} />
         <Route path="/user_login" element={<Login />} />
+        <Route path="/user_sign" element={<Signup />} />
 
         <Route path="user" element={<NavbarUser />}>
           <Route path="home" element={<HomeWithoutNav />} />
@@ -81,7 +76,7 @@ function App() {
           <Route path="allissuedadmin" element={<AllIssuedAdmin />} />
           <Route path="userlist" element={<AllUsers />} />
           <Route path="updateBook/:id" element={<Update />} />
-          <Route path="updateuser" element={<UpdateUser />} />
+          <Route path="updateuser/:id" element={<UpdateUser />} />
           <Route
             path="compose"
             element={

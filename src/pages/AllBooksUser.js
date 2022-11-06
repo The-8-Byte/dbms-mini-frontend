@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BooktempAdmin from "../components/BooktempAdmin";
-import BooktempIssue from "../components/BooktempIssue";
 import BooktempIssueUser from "../components/BooktempIssueUser";
-
 
 export default function AllBooksUser(props) {
   const navigate = useNavigate();
-  const [post, setPost] = useState([]);
+  const [Book, setBook] = useState([]);
+  const [reload, setReload] = useState(false);
   useEffect(() => {
-    async function handleAllPost() {
-      const res = await fetch("/getAllPost");
+    async function handleGetBook() {
+      const res = await fetch("/viewAllBooks");
       const data = await res.json();
-      if (data.error) {
+      console.log(data);
+      if (data.errors) {
         navigate("/");
       } else {
-        setPost(data.Posts);
+        setBook(data.data);
       }
     }
-    handleAllPost();
-  }, []);
+    handleGetBook();
+  }, [reload]);
 
   return (
     <div className="ml-96">
-      {/* {post.map((post) => {
-        return <Posttemp post={post} setId={props.setId} />;
-      })} */}
-      <BooktempIssueUser />
-      <BooktempIssueUser />
-
+      {Book.map((book) => {
+        return <BooktempIssueUser book={book} setReload={setReload} />;
+      })}
     </div>
   );
 }

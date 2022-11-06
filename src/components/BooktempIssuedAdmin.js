@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import ReactLoading from "react-loading";
 import { useNavigate } from "react-router-dom";
 
 export default function BooktempIssuedAdmin(props) {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleReturn = async (e) => {
+    const res = await fetch(`/returnBook/${props.book.book_id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    setIsLoading(false);
+    if (data.errors) {
+      navigate("/");
+    } else {
+      props.setReload((prev) => !prev);
+    }
+  };
 
   return (
     <div className="relative top-24 mb-10 bg-white shadow-xl shadow-blue-10 rounded-lg mx-4 md:mx-auto max-w-md md:max-w-2xl ">
@@ -51,12 +69,22 @@ export default function BooktempIssuedAdmin(props) {
 
         <div className="grid">
           <div className="justify-self-end text-gray-700 text-sm mr-[5.5rem]">
-            <button
-              type="button"
-              className="text-lg font-semibold border-2 border-blue-8 hover:bg-blue-2 hover:text-white hover:border-blue-2 px-7 py-2 rounded-md text-blue-8"
-            >
-              Return
-            </button>
+            {isLoading ? (
+              <ReactLoading
+                type={"cylon"}
+                color={"#89C2D9"}
+                height={"7%"}
+                width={"7%"}
+              />
+            ) : (
+              <button
+                onClick={handleReturn}
+                type="button"
+                className="text-lg font-semibold border-2 border-blue-8 hover:bg-blue-2 hover:text-white hover:border-blue-2 px-7 py-2 rounded-md text-blue-8"
+              >
+                Return
+              </button>
+            )}
           </div>
         </div>
       </div>

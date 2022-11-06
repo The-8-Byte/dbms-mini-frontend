@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import HomeImage from "../images/lib2.svg";
 import NavbarAdmin from "../components/NavbarAdmin";
@@ -34,9 +34,7 @@ export default function Home(props) {
 
       <div className="grid grid-cols-2 pl-24 py-10">
         <div className="mt-32">
-          <h1 className="text-5xl font-bold text-blue-3">
-            LIBRARY MANAGEMENT SYSTEM
-          </h1>
+          <h1 className="text-5xl font-bold text-blue-3">Manage your Books</h1>
           <h1 className="text-3xl py-8">Books Are A Uniquely Portable Magic</h1>
           <p className="text-lg">Track All Our Library Books Here!!</p>
           {isLoggedIn ? (
@@ -49,9 +47,11 @@ export default function Home(props) {
               <h1 className="text-white">See Books</h1>
             </button>
           ) : (
-            <button className="my-5 px-8 py-4 bg-blue-2 font-bold rounded-full">
-              <h1 className="text-white">Get Started</h1>
-            </button>
+            <Link to="/signup">
+              <button className="my-5 px-8 py-4 bg-blue-2 font-bold rounded-full">
+                <h1 className="text-white">Get Started</h1>
+              </button>
+            </Link>
           )}
         </div>
         <div className="mt-32 ">

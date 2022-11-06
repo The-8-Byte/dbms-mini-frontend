@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import BooktempIssuedAdmin from "../components/BooktempIssuedAdmin";
 
 export default function AllIssuedAdmin(props) {
+  const [reload, setReload] = useState(false);
   const navigate = useNavigate();
   const [Book, setBook] = useState([]);
   useEffect(() => {
     async function handleAllBook() {
       const res = await fetch("/viewAllIssuedBookswithUser");
       const data = await res.json();
+      console.log(data);
       if (data.errors) {
         navigate("/");
       } else {
@@ -16,19 +18,19 @@ export default function AllIssuedAdmin(props) {
       }
     }
     handleAllBook();
-  }, []);
+  }, [reload]);
 
   return (
     <div className="ml-96">
       {Book.map((book) => {
-        return <BooktempIssuedAdmin book={book} />;
+        return <BooktempIssuedAdmin book={book} setReload={setReload} />;
       })}
 
       <div className="fixed right-10 bottom-10">
         <button
           className="hover:scale-110 "
           onClick={() => {
-            navigate("/compose");
+            navigate("/admin/compose");
           }}
         >
           <svg

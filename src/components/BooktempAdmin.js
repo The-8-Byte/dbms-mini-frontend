@@ -6,9 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function BooktempAdmin(props) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
   const handleReturn = async (e) => {
-    setIsLoading(true);
     const res = await fetch(`/returnBook/${props.book._id}`, {
       method: "POST",
       headers: {
@@ -20,7 +18,24 @@ export default function BooktempAdmin(props) {
     if (data.errors) {
       navigate("/");
     } else {
-      window.location.reload();
+      props.setReload((prev) => !prev);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    setIsLoading(true);
+    const res = await fetch(`/delete/${props.book._id}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const data = await res.json();
+    setIsLoading(false);
+    if (data.errors) {
+      navigate("/");
+    } else {
+      props.setReload((prev) => !prev);
     }
   };
 
@@ -83,12 +98,22 @@ export default function BooktempAdmin(props) {
                 Update
               </button>
 
-              <button
-                type="button"
-                className="border-2 border-blue-8 hover:bg-blue-2 hover:text-white hover:border-blue-2 px-6 py-3 rounded-md text-blue-8"
-              >
-                Delete
-              </button>
+              {isLoading ? (
+                <ReactLoading
+                  type={"cylon"}
+                  color={"#89C2D9"}
+                  height={"7%"}
+                  width={"7%"}
+                />
+              ) : (
+                <button
+                  onClick={handleDelete}
+                  type="button"
+                  className="border-2 border-blue-8 hover:bg-blue-2 hover:text-white hover:border-blue-2 px-6 py-3 rounded-md text-blue-8"
+                >
+                  Delete
+                </button>
+              )}
             </div>
           </div>
         </div>

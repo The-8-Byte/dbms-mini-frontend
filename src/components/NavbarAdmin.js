@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import ProfileTemp from "./ProfileTemp";
+
 // import { useLocation } from "react-router-dom";
 
 export default function NavbarAdmin(props) {
+  const [show, setShow] = useState("hidden");
   const navigate = useNavigate();
   const [isLoggedin, setIsLoggedin] = useState(false);
+  const [Profile, setProfile] = useState({});
   useEffect(() => {
     async function handleNavbar() {
       const res = await fetch("/auth");
       const data = await res.json();
-      if (data.msg === "Proceed to login") {
+      if (data.msg !== "Admin Login Found") {
         setIsLoggedin(false);
         navigate("/");
       } else {
         setIsLoggedin(true);
+        const profile = await fetch("/getAdmin");
+        const proData = await profile.json();
+        setProfile(proData.admin);
       }
     }
     handleNavbar();
@@ -30,7 +37,7 @@ export default function NavbarAdmin(props) {
     <>
       <div className="z-10 uppercase fixed w-full text-white bg-blue-1 flex px-14 py-4 justify-between items-center">
         <h1 className="text-2xl font-bold">
-          <a href="/">LMS</a>
+          <a href="/admin/home">LMS</a>
         </h1>
         <nav className="flex justify-between space-x-10">
           <Link to="/admin/allBooksadmin">
@@ -45,19 +52,16 @@ export default function NavbarAdmin(props) {
           {isLoggedin ? (
             <h1
               onMouseEnter={() => {
-                {
-                  props.setShowProfile("visible");
-                }
+                setShow("visible");
               }}
               onMouseLeave={() => {
-                {
-                  props.setShowProfile("hidden");
-                }
+                setShow("hidden");
               }}
             >
               Profile
             </h1>
           ) : undefined}
+          <ProfileTemp Profile={Profile} show={show} />
           <h1>
             {isLoggedin ? (
               <h1 onClick={handleLogout} className="cursor-pointer">

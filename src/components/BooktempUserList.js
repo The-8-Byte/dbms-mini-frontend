@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import ReactLoading from "react-loading";
 import { useNavigate } from "react-router-dom";
 
 export default function BooktempUserList(props) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const deleteBook = async () => {
+    setIsLoading(true);
+    const res = await fetch(`/deleteUser/${props.user._id}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(),
+    });
+    const data = await res.json();
+    console.log(data);
+    setIsLoading(false);
+    if (data.errors) {
+      navigate("/");
+    } else {
+      props.setReload((prev) => !prev);
+    }
+  };
 
   return (
     <div className="relative top-24 mb-10 bg-white shadow-xl shadow-blue-10 rounded-lg mx-4 md:mx-auto max-w-md md:max-w-2xl ">
@@ -29,19 +50,29 @@ export default function BooktempUserList(props) {
             <button
               type="button"
               onClick={() => {
-                navigate("/admin/updateuser");
+                navigate(`/admin/updateuser/${props.user._id}`);
               }}
               className="border-2 border-blue-8 hover:bg-blue-2 hover:text-white hover:border-blue-2 px-6 py-3 rounded-md text-blue-8"
             >
               Update
             </button>
 
-            <button
-              type="button"
-              className="text-md border-2 border-blue-8 hover:bg-blue-2 hover:text-white hover:border-blue-2 px-6 py-3 rounded-md text-blue-8"
-            >
-              Delete
-            </button>
+            {!isLoading ? (
+              <button
+                onClick={deleteBook}
+                type="button"
+                className="text-md border-2 border-blue-8 hover:bg-blue-2 hover:text-white hover:border-blue-2 px-6 py-3 rounded-md text-blue-8"
+              >
+                Delete
+              </button>
+            ) : (
+              <ReactLoading
+                type={"cylon"}
+                color={"#89C2D9"}
+                height={"7%"}
+                width={"7%"}
+              />
+            )}
           </div>
         </div>
       </div>

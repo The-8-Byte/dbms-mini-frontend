@@ -5,6 +5,7 @@ import BooktempUser from "../components/BooktempUserList";
 export default function AllUsers(props) {
   const navigate = useNavigate();
   const [User, setUser] = useState([]);
+  const [reload, setReload] = useState(false);
   useEffect(() => {
     async function handleAllUser() {
       const res = await fetch("/viewAllUsers");
@@ -16,19 +17,19 @@ export default function AllUsers(props) {
       }
     }
     handleAllUser();
-  }, []);
+  }, [reload]);
 
   return (
     <div className="ml-96">
       {User.map((user) => {
-        return <BooktempUser user={user} />;
+        return <BooktempUser user={user} setReload={setReload} />;
       })}
 
       <div className="fixed right-10 bottom-10">
         <button
           className="hover:scale-110 "
           onClick={() => {
-            navigate("/compose");
+            navigate("/admin/compose");
           }}
         >
           <svg

@@ -1,20 +1,26 @@
 import React, { useState } from "react";
+import ReactLoading from "react-loading";
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
 export default function Signup(props) {
-  const [user, setUser] = useState({
-    name: "",
+  const [User, setUser] = useState({
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
   const [error, setError] = useState({
-    name: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -25,104 +31,120 @@ export default function Signup(props) {
       password: "",
       confirmPassword: "",
     });
-
+    setIsLoading(true);
     const res = await fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(User),
     });
 
     const data = await res.json();
+    setIsLoading(false);
     if (data.errors) {
       setError(data.errors);
     } else {
-      window.location.reload();
+      navigate("/user/home");
     }
   };
 
   return (
-    <div className="">
-      <div className="container">
-        <form onSubmit={handleSignup} className="">
-          <div className="mainHeading">
-            <h1>SignUp</h1>
-          </div>
+    <div>
+      <form>
+        <div className="grid place-items-center h-screen">
+          <div className=" w-1/2 py-4 border  bg-blue-1 shadow-lg shadow-blue-8/80 rounded-lg  text-blue-8">
+            <div className="flex flex-col items-center">
+              <h3 className="text-lg mr-5">First Name</h3>
+              <input
+                className="text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                type="text"
+                placeholder="Enter First Name"
+                value={User.first_name}
+                onChange={(e) => {
+                  const tempUser = { ...User };
+                  tempUser.first_name = e.target.value;
+                  setUser(tempUser);
+                }}
+              />
+              <br />
 
-          <div className="mailId">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Enter name"
-              value={user.name}
-              onChange={(e) => {
-                const tempUser = { ...user };
-                tempUser.name = e.target.value;
-                setUser(tempUser);
-              }}
-            />
-            <br />
+              <h3 className="text-lg mr-5 ml-3">Last Name</h3>
+              <input
+                className="text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                type="text"
+                placeholder="Enter Last Name"
+                value={User.last_name}
+                onChange={(e) => {
+                  const tempUser = { ...User };
+                  tempUser.last_name = e.target.value;
+                  setUser(tempUser);
+                }}
+              />
+              <br />
+
+              <h3 className="text-lg mr-5 ml-3">Email</h3>
+              <input
+                className="text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-whithandleSignupe dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                type="text"
+                placeholder="Enter Email"
+                value={User.email}
+                onChange={(e) => {
+                  const tempUser = { ...User };
+                  tempUser.email = e.target.value;
+                  setUser(tempUser);
+                }}
+              />
+              <br />
+              <h3 className="text-lg mr-5 ml-3">Password</h3>
+              <input
+                className="text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                type="password"
+                placeholder="Enter Password"
+                value={User.password}
+                onChange={(e) => {
+                  const tempUser = { ...User };
+                  tempUser.password = e.target.value;
+                  setUser(tempUser);
+                }}
+              />
+              <br />
+              <h3 className="text-lg mr-5 ml-3">Confirm Password</h3>
+              <input
+                className="text-lg bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
+                type="password"
+                placeholder="Confirm Password"
+                value={User.confirmPassword}
+                onChange={(e) => {
+                  const tempUser = { ...User };
+                  tempUser.confirmPassword = e.target.value;
+                  setUser(tempUser);
+                }}
+              />
+              <br />
+            </div>
+
+            <div className="flex items-center justify-center">
+              {isLoading ? (
+                <ReactLoading
+                  type={"cylon"}
+                  color={"#89C2D9"}
+                  height={"7%"}
+                  width={"7%"}
+                />
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSignup}
+                  className="border-2 border-blue-8 hover:bg-white hover:text-blue-2 px-6 py-3 rounded-md text-blue-8"
+                >
+                  Submit
+                </button>
+              )}
+            </div>
           </div>
-          <span className="text-pink-mj mx-3 my-1 text-sm font-bold">
-            {error.name}
-          </span>
-          <div className="mailId">
-            <i className="fas fa-user"></i>
-            <input
-              type="text"
-              placeholder="Enter Email"
-              value={user.email}
-              onChange={(e) => {
-                const tempUser = { ...user };
-                tempUser.email = e.target.value;
-                setUser(tempUser);
-              }}
-            />
-            <br />
-          </div>
-          <span className="email error text-pink-mj mx-3 my-1 text-sm font-bold">
-            {error.email}
-          </span>
-          <div className="password">
-            <i className="fas fa-lock"></i>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              value={user.password}
-              onChange={(e) => {
-                const tempUser = { ...user };
-                tempUser.password = e.target.value;
-                setUser(tempUser);
-              }}
-            />
-          </div>
-          <span className="email error text-pink-mj mx-3 my-1 text-sm font-bold">
-            {error.password}
-          </span>
-          <div className="password">
-            <i className="fas fa-lock"></i>
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={user.confirmPassword}
-              onChange={(e) => {
-                const tempUser = { ...user };
-                tempUser.confirmPassword = e.target.value;
-                setUser(tempUser);
-              }}
-            />
-          </div>
-          <span className="email error text-pink-mj mx-3 my-1 text-sm font-bold">
-            {error.confirmPassword}
-          </span>
-          <div className="button">
-            <a href="signup.html">
-              <input type="submit" value="signup" />
-            </a>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }
