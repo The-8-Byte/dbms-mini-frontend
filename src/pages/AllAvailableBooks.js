@@ -4,6 +4,7 @@ import BooktempIssueUser from "../components/BooktempIssueUser";
 
 export default function AllAvailableBooks(props) {
   const navigate = useNavigate();
+  const [reload, setReload] = useState();
   const [Book, setBook] = useState([]);
   useEffect(() => {
     async function handleAllPost() {
@@ -16,12 +17,12 @@ export default function AllAvailableBooks(props) {
       }
     }
     handleAllPost();
-  }, []);
+  }, [reload]);
 
   return (
     <div className="ml-96">
       {Book.map((book) => {
-        return <BooktempIssueUser book={book} />;
+        return <BooktempIssueUser book={book} setReload={setReload} />;
       })}
     </div>
   );

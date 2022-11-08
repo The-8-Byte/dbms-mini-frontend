@@ -13,12 +13,14 @@ export default function Home(props) {
     async function handleUser() {
       const res = await fetch("/getAdmin");
       const data = await res.json();
-      console.log(data);
-      if (data.error) {
+      if (data.AuthError) {
+        setIsUser((prev) => (prev = "User"));
         setIsLoggedIn(false);
       } else {
+        setIsUser((prev) => (prev = "admin"));
         setIsLoggedIn(true);
       }
+      console.log(isUser);
     }
     handleUser();
   }, []);
@@ -26,10 +28,10 @@ export default function Home(props) {
     <div>
       {!isLoggedIn ? (
         <Navbar />
-      ) : isUser === "User" ? (
-        <NavbarUser />
-      ) : (
+      ) : isUser === "admin" ? (
         <NavbarAdmin />
+      ) : (
+        <NavbarUser />
       )}
 
       <div className="grid grid-cols-2 pl-24 py-10">

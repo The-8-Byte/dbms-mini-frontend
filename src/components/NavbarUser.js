@@ -34,7 +34,7 @@ export default function NavbarUser(props) {
   // const location = useLocation();
   return (
     <>
-      <div className="uppercase fixed w-full text-white bg-blue-1 flex px-14 py-4 justify-between items-center">
+      <div className="z-10 uppercase fixed w-full text-white bg-blue-1 flex px-14 py-4 justify-between items-center">
         <h1 className="text-2xl font-bold">
           <Link to="/user/home">
             <h1>LMS</h1>

@@ -5,12 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Navbar(props) {
   const navigate = useNavigate();
   const [isLoggedin, setIsLoggedin] = useState(false);
-  const isLoggedIn = 0;
   useEffect(() => {
     async function handleNavbar() {
-      const res = await fetch("/getUser");
+      const res = await fetch("/getprofile");
       const data = await res.json();
-      if (data.error) {
+      console.log(data);
+      if (data.errors) {
         setIsLoggedin(false);
       } else {
         setIsLoggedin(true);
